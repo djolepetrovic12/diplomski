@@ -7,7 +7,11 @@ function FileUpload({onFileSelect}) {
     if (file) {
       onFileSelect(file);
     }
+
+     e.target.value = null;
   };
+
+  
 
   return (
         <Box mt={2} mb={2}>

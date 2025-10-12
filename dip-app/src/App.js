@@ -34,7 +34,10 @@ function App() {
         </>
       )}
 
-      <FileDownload file={compressedFile} />
+      {compressedFile && file && (
+        <FileDownload file={compressedFile} />
+      )}
+
     </Container>
   );
 }

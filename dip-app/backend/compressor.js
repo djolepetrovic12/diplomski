@@ -25,13 +25,28 @@ app.post('/compress', upload.single('file'), async (req, res) => {
   let responded = false;
 
   try {
-        fs.renameSync(inputPath, originalNamePath);
+    fs.renameSync(inputPath, originalNamePath);
 
-        const archive = add(outputPath, originalNamePath, {
-        $bin: sevenBin.path7za,
-        method: ['0=lzma2'],
-        mx: 9,
-    });
+    let userOptions = {};
+    if (req.body.settings) {
+      try {
+        userOptions = JSON.parse(req.body.settings);
+      } catch (e) {
+        console.warn('Invalid settings JSON, ignoring.');
+      }
+    }
+
+    console.log(userOptions);
+
+    const compressionOptions = {
+    $bin: sevenBin.path7za,
+    method: [`0=${userOptions.method || 'lzma2'}`], // -m0=lzma2
+    mx: userOptions.level ?? 9,                    // -mx=9
+    ...(userOptions.solid ? { ms: userOptions.solid } : {}),   // -ms=on/off/size
+    ...(userOptions.threads ? { mmt: userOptions.threads } : {}), // -mmt=4
+    };
+
+    const archive = add(outputPath, originalNamePath, compressionOptions);
 
     archive.on('end', () => {
         if (responded) return;
