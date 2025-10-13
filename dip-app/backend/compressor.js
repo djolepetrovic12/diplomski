@@ -14,6 +14,7 @@ const app = express();
 const upload = multer({ dest: 'uploads/' });
 
 app.use(cors());
+app.use(express.json());
 
 app.post('/compress', upload.single('file'), async (req, res) => {
   const inputPath = req.file.path;

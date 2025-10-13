@@ -15,7 +15,7 @@ function FileUpload({onFileSelect}) {
 
   return (
         <Box mt={2} mb={2}>
-      <Button variant="contained" component="label">
+      <Button variant="contained" component="label" fullWidth>
         Upload File
         <input type="file" hidden onChange={handleChange} />
       </Button>

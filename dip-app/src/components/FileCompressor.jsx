@@ -1,10 +1,9 @@
-import { Box, Button, CircularProgress, Typography ,FormControl, MenuItem,Select, InputLabel,Slider} from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Button, CircularProgress, Typography ,FormControl, MenuItem,Select, InputLabel,Slider, LinearProgress} from '@mui/material';
+import React, { useState, useEffect } from 'react';
 
 
 function FileCompressor({ file, onCompressed }) {
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(null);
 
   const [method, setMethod] = useState('lzma2');
   const [level, setLevel] = useState(9);
@@ -14,7 +13,6 @@ function FileCompressor({ file, onCompressed }) {
   const handleCompress = async () => {
     if (!file) return;
     setLoading(true);
-    setProgress(0);
 
     const formData = new FormData();
     formData.append('file', file);
@@ -38,16 +36,24 @@ function FileCompressor({ file, onCompressed }) {
       console.error(err);
     } finally {
       setLoading(false);
-      setProgress(null);
     }
+
   };
+
+
 
   return (
     <Box mt={2} mb={2}>
 
-      <FormControl fullWidth margin="dense">
-        <InputLabel>Method</InputLabel>
-        <Select value={method} onChange={(e) => setMethod(e.target.value)}>
+      <FormControl fullWidth margin="dense" sx={{ mt:2, mb:2}}>
+        <InputLabel id="methodLabel">Method</InputLabel>
+        <Select
+          labelId="methodLabel"
+          id="method-select"
+          value={method}
+          label="Method"
+          onChange={(e) => setMethod(e.target.value)}
+        >
           <MenuItem value="lzma2">LZMA2</MenuItem>
           <MenuItem value="lzma">LZMA</MenuItem>
           <MenuItem value="bzip2">BZip2</MenuItem>
@@ -64,6 +70,7 @@ function FileCompressor({ file, onCompressed }) {
         max={9}
         step={1}
         marks
+        sx={{ mt:1}}
       />
 
       <Typography gutterBottom>Threads: {threads}</Typography>
@@ -73,11 +80,13 @@ function FileCompressor({ file, onCompressed }) {
         min={1}
         max={8}
         step={1}
+        marks
+        sx={{ mt:1}}
       />
 
-      <FormControl fullWidth margin="dense">
-        <InputLabel>Solid Mode</InputLabel>
-        <Select value={solid} onChange={(e) => setSolid(e.target.value)}>
+      <FormControl fullWidth margin="dense" sx={{ mt:2}}>
+        <InputLabel id="solidLabel">Solid Mode</InputLabel>
+        <Select label="Solid Mode" id="solid-label" labelId="solidLabel" value={solid} onChange={(e) => setSolid(e.target.value)}>
           <MenuItem value="on">On</MenuItem>
           <MenuItem value="off">Off</MenuItem>
         </Select>
@@ -90,14 +99,19 @@ function FileCompressor({ file, onCompressed }) {
         color="secondary"
         disabled={!file || loading}
         onClick={handleCompress}
+        fullWidth
+        sx={{ mt: 2 }}
       >
         {loading ? 'Compressing...' : 'Compress File'}
       </Button>
 
       {loading && (
-        <Box mt={2} display="flex" alignItems="center" gap={1}>
-          <CircularProgress size={24} />
-          <Typography>Compressing with 7-Zip...</Typography>
+        <Box mt={2}>
+
+          <Box mt={2} display="flex" justifyContent="center" alignItems="center" flexDirection="column" gap={1}>
+            <CircularProgress size={24} />
+            <Typography variant="body2">Working...</Typography>
+          </Box>
         </Box>
       )}
     </Box>

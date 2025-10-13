@@ -19,6 +19,7 @@ function FileDownload({file}) {
         variant="contained" 
         onClick={handleDownload} 
         disabled={!file}
+        fullWidth
       >
         Download File
       </Button>
