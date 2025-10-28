@@ -15,12 +15,7 @@ function FileDownload({file}) {
 
   return (
     <Box mt={2} mb={2}>
-      <Button 
-        variant="contained" 
-        onClick={handleDownload} 
-        disabled={!file}
-        fullWidth
-      >
+      <Button variant="contained" onClick={handleDownload} disabled={!file}fullWidth>
         Download File
       </Button>
     </Box>

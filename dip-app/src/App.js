@@ -70,7 +70,7 @@ function App() {
             <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center' }}>
               Selected file: {file.name}
             </Typography>
-            <IconButton onClick={()=>{setFile(null)}}>
+            <IconButton onClick={()=>{setFile(null);setCompressedFile(null);}}>
               <ClearIcon></ClearIcon>
             </IconButton>
           </Box>

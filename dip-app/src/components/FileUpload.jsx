@@ -11,10 +11,8 @@ function FileUpload({onFileSelect}) {
      e.target.value = null;
   };
 
-  
-
   return (
-        <Box mt={2} mb={2}>
+    <Box mt={2} mb={2}>
       <Button variant="contained" component="label" fullWidth>
         Upload File
         <input type="file" hidden onChange={handleChange} />
